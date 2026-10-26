@@ -1,0 +1,136 @@
+﻿@{
+    var currentPath = Context.Request.Path.Value;
+    var isHomePage = currentPath == "/" ||
+        string.Equals(currentPath, "/Index", StringComparison.OrdinalIgnoreCase);
+    var sectionPrefix = isHomePage ? "#" : "/#";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AbiaSoft</title>
+    <link rel="icon" type="image/png" href="~/img/logo.png" asp-append-version="true" />
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Icon fonts (application-wide) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+        crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AbiaSoft.styles.css" asp-append_version="true" />
+</head>
+
+<body>
+    <header>
+        <!-- Icon CSS: Font Awesome and Bootstrap Icons (load here so icon classes render) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-papV+Yk6YQy6u6QeR9K5Yq6E3jV9m7j2Y9qg1e6e+u1Yb0Gq0Y5VbQh1g2K5J1x6Yf6q3Z1n3Q2Vx2YQ== "
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+            crossorigin="anonymous" />
+
+        <div class="text-center">
+            <!-- Spinner Start -->
+            <div id="spinner"
+                class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+                <div class="spinner"></div>
+            </div>
+            <!-- Spinner End -->
+            <!-- Topbar Start -->
+            <div class="container-fluid bg-dark px-5 d-none d-lg-block">
+                <div class="row gx-0">
+                    <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
+                        <div class="d-inline-flex align-items-center" style="height: 45px;">
+                            <small class="me-3 text-light"><i class="fa fa-map-marker-alt me-2"></i>Noida, Uttar Pradesh,
+                                201304, India</small>
+                            <small class="me-3 text-light"><i class="fa fa-phone-alt me-2"></i><a class="text-light text-decoration-none" href="tel:+918595428595">+91-8595-42-8595</a></small>
+                            <small class="text-light"><i class="fa fa-envelope-open me-2"></i><a class="text-light text-decoration-none" href="mailto:abiasofttechnology@gmail.com">abiasoft@outlook.com</a></small>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center text-lg-end">
+                        <div class="d-inline-flex align-items-center" style="height: 45px;">
+                            <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="https://x.com/AbiaSoft" target="_blank"
+                               rel="noopener noreferrer">
+                                <i class="fab fa-twitter fw-normal"></i></a>
+                            <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="https://www.facebook.com/abiasoft" target="_blank"
+                               rel="noopener noreferrer">
+                                <i class="fab fa-facebook-f fw-normal"></i></a>
+                            <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="https://www.linkedin.com/company/abiasoft" target="_blank"
+                               rel="noopener noreferrer">
+                                <i class="fab fa-linkedin-in fw-normal"></i></a>
+                            <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="https://www.instagram.com/abiasoft" target="_blank"
+                               rel="noopener noreferrer">
+                                <i class="fab fa-instagram fw-normal"></i></a>
+                            <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href="https://www.youtube.com/@@AbiaSoft" target="_blank"
+                               rel="noopener noreferrer">
+                                <i class="fab fa-youtube fw-normal"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Topbar End -->
+        </div>
+        <div class="container-fluid position-relative p-0">
+            <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0">
+                <a href="@(sectionPrefix + "home")" class="navbar-brand p-0">
+                    @* Logo image added; keep site name for accessibility and SEO.
+                       Place your PNG at wwwroot/images/logo.png. *@
+                    <h1 class="m-0 d-inline align-middle fw-normal">
+                        <img src="~/img/logo.png" asp-append-version="true" alt="AbiaSoft logo" class="me-2 align-middle"
+                            style="height:80px;" />
+                        <span class="align-middle d-none d-sm-inline">AbiaSoft Technologies Pvt. Ltd</span>
+                    </h1>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="fa fa-bars"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto py-0">
+                        <a class="nav-link" href="@(sectionPrefix + "home")">Home</a>
+                        <a class="nav-link" href="@(sectionPrefix + "about")">About</a>
+                        <a class="nav-link" href="@(sectionPrefix + "why-us")">Why Us</a>
+                        <a class="nav-link" href="@(sectionPrefix + "services")">Services</a>
+                        <a class="nav-link" href="@(sectionPrefix + "team")">Team</a>
+                        <a class="nav-link" href="@(sectionPrefix + "contact")">Contact</a>
+                        <a class="btn btn-primary py-2 px-4 ms-lg-3"
+                           href="@(sectionPrefix + "quote")">Get a Quote</a>
+                    </div>
+                    @* <butaton type="button" class="btn text-primary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></butaton>
+                    <a href="https://htmlcodex.com/downloading/?item=1858" class="btn btn-primary py-2 px-4 ms-3">Buy Pro Version</a> *@
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="container-fluid p-0">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="site-legal-footer bg-dark text-light py-3">
+        <div class="container text-center">
+            <p class="mb-0">
+                &copy; 2026 AbiaSoft Technologies Pvt. Ltd.
+                <span class="mx-2" aria-hidden="true">|</span>
+                <a class="text-light" asp-area="" asp-page="/Privacy">Privacy</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+
+</html>
