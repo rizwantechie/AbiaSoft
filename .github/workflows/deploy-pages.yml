@@ -1,0 +1,83 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Generate static website
+        env:
+          STATIC_BASE_PATH: /${{ github.event.repository.name }}/
+        run: |
+          set -euo pipefail
+          dotnet restore
+          dotnet build --no-restore
+
+          dotnet run --no-build --no-launch-profile --urls http://127.0.0.1:5080 > /tmp/abiasoft.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:5080/ -o /tmp/abiasoft-home.html; then
+              break
+            fi
+            if ! kill -0 "$server_pid"; then
+              cat /tmp/abiasoft.log
+              exit 1
+            fi
+            sleep 1
+          done
+
+          test -s /tmp/abiasoft-home.html || {
+            cat /tmp/abiasoft.log
+            exit 1
+          }
+          curl --fail --silent http://127.0.0.1:5080/Privacy -o /tmp/abiasoft-privacy.html
+          mkdir -p _site
+          cp -R wwwroot/. _site/
+          python3 scripts/prepare_github_pages.py \
+            --homepage /tmp/abiasoft-home.html \
+            --privacy /tmp/abiasoft-privacy.html \
+            --site-dir _site \
+            --base-path "$STATIC_BASE_PATH"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
