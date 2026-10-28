@@ -34,7 +34,7 @@ jobs:
 
       - name: Generate static website
         env:
-          STATIC_BASE_PATH: /${{ github.event.repository.name }}/
+          STATIC_BASE_PATH: /abiasoft/
         run: |
           set -euo pipefail
           dotnet restore
